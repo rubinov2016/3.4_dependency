@@ -21,7 +21,6 @@ public class AfishaManagerTest {
     @Mock
     private AfishaRepository repository;
     @InjectMocks
-    //   private AfishaRepository repository;
     private AfishaManager manager;
     private Movie first = new Movie("first", "imageUrl1", "name1", "genre1");
     private Movie second = new Movie("second", "imageUrl2", "name2", "genre2");
@@ -48,6 +47,7 @@ public class AfishaManagerTest {
     //    'removeById' is a *void method* and it *cannot* be stubbed with a *return value*
     @Test
     public void shouldRemoveIfExists() {
+        AfishaRepository repository = new AfishaRepository();
         AfishaManager manager = new AfishaManager(repository);
         manager.add(first);
         manager.add(second);
