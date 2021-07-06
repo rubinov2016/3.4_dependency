@@ -11,6 +11,7 @@ import ru.netology.repository.AfishaRepository;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
@@ -20,10 +21,28 @@ public class AfishaManagerTest {
     @Mock
     private AfishaRepository repository;
     @InjectMocks
+    //   private AfishaRepository repository;
     private AfishaManager manager;
     private Movie first = new Movie("first", "imageUrl1", "name1", "genre1");
     private Movie second = new Movie("second", "imageUrl2", "name2", "genre2");
     private Movie third = new Movie("third", "imageUrl3", "name3", "genre3");
+
+    @Test
+    public void shouldFindByID() {
+        String id = "first";
+
+        Movie returned = first;
+        doReturn(returned).when(repository).findById(id);
+
+        Movie expected = first;
+        Movie actual = manager.findById(id);
+        assertEquals(expected, actual);
+
+        // удостоверяемся, что заглушка была вызвана
+        // но это уже проверка "внутренней" реализации
+        verify(repository).findById(id);
+
+    }
 
     @Test
     public void shouldRemoveIfExists() {
@@ -40,6 +59,7 @@ public class AfishaManagerTest {
 
         assertArrayEquals(expected, actual);
     }
+
     @Test
     public void shouldRemoveIfNotExists() {
         AfishaRepository repository = new AfishaRepository();
@@ -51,10 +71,11 @@ public class AfishaManagerTest {
         manager.removeById(idToRemove);
 
         Movie[] actual = manager.getAll();
-        Movie[] expected = new Movie[]{third, second,first};
+        Movie[] expected = new Movie[]{third, second, first};
 
         assertArrayEquals(expected, actual);
     }
+
     @Test
     public void shouldRemoveAll() {
         AfishaRepository repository = new AfishaRepository();
@@ -66,19 +87,6 @@ public class AfishaManagerTest {
 
         Movie[] actual = manager.getAll();
         Movie[] expected = new Movie[]{};
-
-        assertArrayEquals(expected, actual);
-    }
-    @Test
-    public void shouldFindByID() {
-        AfishaRepository repository = new AfishaRepository();
-        AfishaManager manager = new AfishaManager(repository);
-        manager.add(first);
-        manager.add(second);
-        manager.add(third);
-
-        Movie[] actual = {manager.findById("first")};
-        Movie[] expected = {first};
 
         assertArrayEquals(expected, actual);
     }
@@ -113,5 +121,19 @@ public class AfishaManagerTest {
         Movie[] actual = manager.getFeed();
         assertArrayEquals(expected, actual);
     }
+
+//    @Test
+//    public void shouldFindByID() {
+//        AfishaRepository repository = new AfishaRepository();
+//        AfishaManager manager = new AfishaManager(repository);
+//        manager.add(first);
+//        manager.add(second);
+//        manager.add(third);
+//
+//        Movie[] actual = {manager.findById("first")};
+//        Movie[] expected = {first};
+//
+//        assertArrayEquals(expected, actual);
+//    }
 
 }
