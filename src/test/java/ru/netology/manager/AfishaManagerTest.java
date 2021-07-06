@@ -44,16 +44,15 @@ public class AfishaManagerTest {
 
     }
 
+    //    org.mockito.exceptions.misusing.CannotStubVoidMethodWithReturnValue:
+    //    'removeById' is a *void method* and it *cannot* be stubbed with a *return value*
     @Test
     public void shouldRemoveIfExists() {
-        String idToRemove = "first";
-
-        AfishaRepository repository = new AfishaRepository();
         AfishaManager manager = new AfishaManager(repository);
         manager.add(first);
         manager.add(second);
         manager.add(third);
-
+        String idToRemove = "first";
         manager.removeById(idToRemove);
 
         Movie[] actual = manager.getAll();
@@ -123,19 +122,5 @@ public class AfishaManagerTest {
         Movie[] actual = manager.getFeed();
         assertArrayEquals(expected, actual);
     }
-
-//    @Test
-//    public void shouldFindByID() {
-//        AfishaRepository repository = new AfishaRepository();
-//        AfishaManager manager = new AfishaManager(repository);
-//        manager.add(first);
-//        manager.add(second);
-//        manager.add(third);
-//
-//        Movie[] actual = {manager.findById("first")};
-//        Movie[] expected = {first};
-//
-//        assertArrayEquals(expected, actual);
-//    }
 
 }
