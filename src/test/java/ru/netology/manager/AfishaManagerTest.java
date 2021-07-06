@@ -2,6 +2,8 @@ package ru.netology.manager;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import ru.netology.domain.Movie;
@@ -51,6 +53,64 @@ public class AfishaManagerTest {
         Movie[] actual = manager.getAll();
         Movie[] expected = new Movie[]{third, second,first};
 
+        assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void shouldRemoveAll() {
+        AfishaRepository repository = new AfishaRepository();
+        AfishaManager manager = new AfishaManager(repository);
+        manager.add(first);
+        manager.add(second);
+        manager.add(third);
+        manager.removeAll();
+
+        Movie[] actual = manager.getAll();
+        Movie[] expected = new Movie[]{};
+
+        assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void shouldFindByID() {
+        AfishaRepository repository = new AfishaRepository();
+        AfishaManager manager = new AfishaManager(repository);
+        manager.add(first);
+        manager.add(second);
+        manager.add(third);
+
+        Movie[] actual = {manager.findById("first")};
+        Movie[] expected = {first};
+
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldShowOne() {
+        AfishaRepository repository = new AfishaRepository();
+        AfishaManager manager = new AfishaManager(repository);
+
+        manager.add(first);
+        Movie[] actual = manager.getFeed();
+        Movie[] expected = new Movie[]{first};
+
+        assertArrayEquals(expected, actual);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {10, 30, 100})
+    public void shouldAddThirty(int lengthAdd) { // только для случаев -> количество добавленных превышает длину Feed
+        AfishaRepository repository = new AfishaRepository();
+        AfishaManager manager = new AfishaManager(repository);
+        int feedLength = manager.getFeedLength(); //длина Feed
+        int lengthRedundant = lengthAdd - feedLength;  //лишние фильмы
+        Movie[] expected = new Movie[feedLength];
+        for (int i = 0; i < lengthAdd; i++) {
+            Movie movie = new Movie("id" + i, "url" + i, "name" + i, "genre" + i);
+            manager.add(movie);
+            if (i > lengthRedundant - 1) {
+                expected[lengthAdd - i - 1] = movie; //меняем порядок
+            }
+        }
+        Movie[] actual = manager.getFeed();
         assertArrayEquals(expected, actual);
     }
 

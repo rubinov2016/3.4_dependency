@@ -4,6 +4,10 @@ import ru.netology.domain.Movie;
 
 public class AfishaRepository {
     private Movie[] movies = new Movie[]{};
+    private int feedLength = 10;
+
+    public int getFeedLength() {return this.feedLength;}
+    public void setFeedLength(int feedLength) {this.feedLength = feedLength;}
 
     public void save(Movie movie) {
         int length = movies.length + 1;
