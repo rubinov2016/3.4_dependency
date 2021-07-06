@@ -41,20 +41,27 @@ public class AfishaRepository {
     public void removeById(String id) {
         int length = movies.length - 1;
         Movie[] tmp = new Movie[length];
+        boolean isFound = false; //флаг, нашли ли мы значение
         int index = 0;
         for (Movie item : movies) {
-            if (!id.equals(item.getId())) {
-                tmp[index] = item;
-                index++;
+            if (id.equals(item.getId())) {
+                isFound = true;
+            }else{
+                    if (index < movies.length-1) {
+                        tmp[index] = item;
+                        index++;
+                    }
+                }
             }
+            // меняем наши элементы
+            if (isFound) {
+                movies = tmp;
+            } ;
         }
-        // меняем наши элементы
-        movies = tmp;
-    }
 
-    public void removeAll() {
-        Movie[] tmp = new Movie[0];
-        movies = tmp;
-    }
+        public void removeAll () {
+            Movie[] tmp = new Movie[0];
+            movies = tmp;
+        }
 
-}
+    }
