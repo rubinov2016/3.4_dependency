@@ -46,12 +46,14 @@ public class AfishaManagerTest {
 
     @Test
     public void shouldRemoveIfExists() {
+        String idToRemove = "first";
+
         AfishaRepository repository = new AfishaRepository();
         AfishaManager manager = new AfishaManager(repository);
         manager.add(first);
         manager.add(second);
         manager.add(third);
-        String idToRemove = "first";
+
         manager.removeById(idToRemove);
 
         Movie[] actual = manager.getAll();
