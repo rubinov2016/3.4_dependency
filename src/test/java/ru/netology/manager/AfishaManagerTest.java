@@ -104,6 +104,18 @@ public class AfishaManagerTest {
         assertArrayEquals(expected, actual);
     }
 
+    @Test
+    public void shouldSetFeedLength() {
+        AfishaRepository repository = new AfishaRepository();
+        AfishaManager manager = new AfishaManager(repository);
+
+        int expected = 10;
+        manager.setFeedLength(expected);
+        int actual =manager.getFeedLength();
+
+        assertEquals(expected, actual);
+    }
+
     @ParameterizedTest
     @ValueSource(ints = {10, 30, 100})
     public void shouldAddThirty(int lengthAdd) { // только для случаев -> количество добавленных превышает длину Feed
