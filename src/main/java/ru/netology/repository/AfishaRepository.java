@@ -6,8 +6,13 @@ public class AfishaRepository {
     private Movie[] movies = new Movie[]{};
     private int feedLength = 10;
 
-    public int getFeedLength() {return this.feedLength;}
-    public void setFeedLength(int feedLength) {this.feedLength = feedLength;}
+    public int getFeedLength() {
+        return this.feedLength;
+    }
+
+    public void setFeedLength(int feedLength) {
+        this.feedLength = feedLength;
+    }
 
     public void save(Movie movie) {
         int length = movies.length + 1;
@@ -43,29 +48,23 @@ public class AfishaRepository {
     }
 
     public void removeById(String id) {
-        int length = movies.length - 1;
-        Movie[] tmp = new Movie[length];
-        boolean isFound = false; //флаг, нашли ли мы значение
-        int index = 0;
-        for (Movie item : movies) {
-            if (id.equals(item.getId())) {
-                isFound = true;
-            }else{
-                    if (index < movies.length-1) {
-                        tmp[index] = item;
-                        index++;
-                    }
+        if (findById(id) != null) {
+            int length = movies.length - 1;
+            Movie[] tmp = new Movie[length];
+            int index = 0;
+            for (Movie item : movies) {
+                if (id.equals(item.getId())) {
+                    tmp[index] = item;
+                    index++;
                 }
             }
-            // меняем наши элементы
-            if (isFound) {
-                movies = tmp;
-            } ;
-        }
-
-        public void removeAll () {
-            Movie[] tmp = new Movie[0];
             movies = tmp;
         }
-
     }
+
+    public void removeAll() {
+        Movie[] tmp = new Movie[0];
+        movies = tmp;
+    }
+
+}
