@@ -27,9 +27,8 @@ public class AfishaManagerTest {
     private Movie third = new Movie("third", "imageUrl3", "name3", "genre3");
 
     @Test
-    public void shouldFindByID() {
+    public void shouldFindByIdIfExist() {
         String id = "first";
-
         Movie returned = first;
         doReturn(returned).when(repository).findById(id);
 
@@ -37,29 +36,24 @@ public class AfishaManagerTest {
         Movie actual = manager.findById(id);
         assertEquals(expected, actual);
 
-        // удостоверяемся, что заглушка была вызвана
-        // но это уже проверка "внутренней" реализации
         verify(repository).findById(id);
+    }
 
+    @Test
+    public void shouldFindByIdIfNoExist() {
+        String id = "first";
+        Movie returned = null;
+        doReturn(returned).when(repository).findById(id);
+
+        Movie expected = null;
+        Movie actual = manager.findById(id);
+        assertEquals(expected, actual);
+
+        verify(repository).findById(id);
     }
 
     //    org.mockito.exceptions.misusing.CannotStubVoidMethodWithReturnValue:
     //    'removeById' is a *void method* and it *cannot* be stubbed with a *return value*
-    @Test
-    public void shouldRemoveIfExists() {
-        AfishaRepository repository = new AfishaRepository();
-        AfishaManager manager = new AfishaManager(repository);
-        manager.add(first);
-        manager.add(second);
-        manager.add(third);
-        String idToRemove = "first";
-        manager.removeById(idToRemove);
-
-        Movie[] actual = manager.getAll();
-        Movie[] expected = new Movie[]{third, second};
-
-        assertArrayEquals(expected, actual);
-    }
 
     @Test
     public void shouldRemoveIfNotExists() {
@@ -77,6 +71,21 @@ public class AfishaManagerTest {
         assertArrayEquals(expected, actual);
     }
 
+    @Test
+    public void shouldRemoveIfExists() {
+        AfishaRepository repository = new AfishaRepository();
+        AfishaManager manager = new AfishaManager(repository);
+        manager.add(first);
+        manager.add(second);
+        manager.add(third);
+        String idToRemove = "first";
+        manager.removeById(idToRemove);
+
+        Movie[] actual = manager.getAll();
+        Movie[] expected = new Movie[]{third, second};
+
+        assertArrayEquals(expected, actual);
+    }
     @Test
     public void shouldRemoveAll() {
         AfishaRepository repository = new AfishaRepository();
@@ -111,7 +120,7 @@ public class AfishaManagerTest {
 
         int expected = 10;
         manager.setFeedLength(expected);
-        int actual =manager.getFeedLength();
+        int actual = manager.getFeedLength();
 
         assertEquals(expected, actual);
     }

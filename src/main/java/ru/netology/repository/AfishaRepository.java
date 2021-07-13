@@ -36,15 +36,12 @@ public class AfishaRepository {
     }
 
     public Movie findById(String id) {
-        Movie movie = new Movie();
-        int index = 0;
         for (Movie item : movies) {
-            if (id.equals(item.getId())) {
-                movie = movies[index];
-                index++;
+            if (id.equals(item.getId())) { //string
+                return item;
             }
         }
-        return movie;
+        return null;
     }
 
     public void removeById(String id) {
@@ -53,7 +50,7 @@ public class AfishaRepository {
             Movie[] tmp = new Movie[length];
             int index = 0;
             for (Movie item : movies) {
-                if (id.equals(item.getId())) {
+                if (!id.equals(item.getId())) { //здесь была ошибка
                     tmp[index] = item;
                     index++;
                 }
